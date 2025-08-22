@@ -28,17 +28,17 @@ Applications include:
 1. **Clone the repository**
 
 bash
-git clone https://github.com/MNCuong/license_plate.git
-cd vehicle_lpr
+```git clone https://github.com/MNCuong/license_plate.git```
+```cd vehicle_lpr```
 
 
 2. **Create a virtual environment**
 
 bash
-python -m venv venv
+```python -m venv venv```
  Activate environment:
-source venv/bin/activate    Linux/macOS
-venv\Scripts\activate       Windows
+```source venv/bin/activate ```   Linux/macOS
+```venv\Scripts\activate   ```    Windows
 
 
 3. **Install required packages**
