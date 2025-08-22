@@ -1,5 +1,3 @@
-Chắc chắn! Dưới đây là phiên bản đầy đủ, format lại README với **mã code được đặt trong các block \`\`\` và các chú thích #**, bạn có thể copy trực tiếp thành 1 file `README.md`:
-
 ````markdown
 # Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System
 
@@ -38,9 +36,11 @@ It leverages YOLO models for detection and OCR, with a focus on scalability and 
 ## Installation
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/MNCuong/license_plate.git
 cd VEHICLE_LPR
+```
 ````
 
 ### 2. Set Up Virtual Environment
@@ -80,9 +80,9 @@ python src/main.py
 
 Update `src/config.py` with:
 
-* Video source (e.g., camera feed or video file).
-* YOLO model paths (vehicle detection, license plate, OCR).
-* MongoDB connection settings.
+- Video source (e.g., camera feed or video file).
+- YOLO model paths (vehicle detection, license plate, OCR).
+- MongoDB connection settings.
 
 Logs are saved in `src/logs/`. Recognized plates are automatically stored in MongoDB.
 
@@ -144,9 +144,9 @@ VEHICLE_LPR/
 ├── output/              # Processed output files
 ├── plate/               # License plate-related data
 ├── src/                 # Source code
-│   ├── __pycache__/     
+│   ├── __pycache__/
 │   ├── logs/            # Log files
-│   ├── __init__.py      
+│   ├── __init__.py
 │   ├── config.py        # Configuration settings
 │   ├── database.py      # MongoDB integration
 │   ├── main.py          # Main ALPR script
@@ -155,7 +155,7 @@ VEHICLE_LPR/
 │   ├── vehicle_detection.py  # Vehicle detection logic
 │   └── video_processor.py    # Video processing logic
 ├── templates/           # Web UI templates
-│   └── index.html       
+│   └── index.html
 ├── video/               # Video samples
 ├── app.py               # Flask application (if enabled)
 ├── README.md            # Project documentation
@@ -185,5 +185,7 @@ Licensed under the **MNC License**.
 ## Contact
 
 For support or feedback: **[cuong.mai@vconnex.vn](mailto:cuong.mai@vconnex.vn)**
+
+```
 
 ```
