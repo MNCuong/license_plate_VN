@@ -1,5 +1,5 @@
-###Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System
-Overview
+# Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System
+## Overview
 The Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System is a robust Python-based solution designed to detect vehicles, extract license plates, and perform Optical Character Recognition (OCR) to read Vietnamese license plate numbers from video streams or images. Built with scalability and real-world applications in mind, this system is ideal for:
 
 Parking Management: Automate vehicle entry/exit tracking.
