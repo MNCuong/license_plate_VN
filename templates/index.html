@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Danh sách biển số</title>
+    <style>
+      /* ----- GENERAL ----- */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #fff;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+      h1 {
+        margin-top: 30px;
+        font-size: 3em;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ----- SEARCH BOX ----- */
+      .search-box {
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .search-box input {
+        width: 300px;
+        padding: 10px 15px;
+        border-radius: 25px 0 0 25px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+      }
+      .search-box button {
+        padding: 10px 20px;
+        border-radius: 0 25px 25px 0;
+        border: none;
+        background: #ff6a00;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .search-box button:hover {
+        background: #ff9e3b;
+      }
+
+      /* ----- IMAGE GRID ----- */
+      .image-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px;
+      }
+      .image-card {
+        margin: 15px;
+        border-radius: 15px;
+        overflow: hidden;
+        cursor: pointer;
+        background: linear-gradient(145deg, #ff6a00, #ffb347);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s, box-shadow 0.3s;
+        width: 320px;
+      }
+      .image-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+      }
+      .image-card img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        display: block;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      }
+      .image-card p {
+        margin: 5px 0;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ----- POPUP ----- */
+      .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        animation: fadeIn 0.4s;
+      }
+      .popup-content {
+        background: #1c1c1c;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 700px;
+        color: #fff;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        animation: popupScale 0.3s ease;
+      }
+      .popup-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-top: 15px;
+        border: 2px solid #ff6a00;
+      }
+      .close-btn {
+        cursor: pointer;
+        color: #ff6a00;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .close-btn:hover {
+        color: #ffb347;
+      }
+
+      /* ----- ANIMATIONS ----- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes popupScale {
+        from {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      :root {
+        --danger: #dc2626;
+        --danger-hover: #b91c1c;
+        --danger-active: #991b1b;
+        --ring: #fca5a5;
+        --text: #ffffff;
+        --shadow: 0 10px 20px rgba(220, 38, 38, 0.25);
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 18px;
+        font: 600 14px/1.2 ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          Roboto, "Helvetica Neue", Arial;
+        cursor: pointer;
+        transition: transform 0.08s ease, box-shadow 0.2s ease,
+          background-color 0.2s ease, opacity 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .btn-danger {
+        background: var(--danger);
+        color: var(--text);
+        box-shadow: var(--shadow);
+      }
+      .btn-danger:hover {
+        background: var(--danger-hover);
+        transform: translateY(-1px);
+      }
+      .btn-danger:active {
+        background: var(--danger-active);
+        transform: translateY(0);
+      }
+      .btn:focus-visible {
+        outline: none;
+        box-shadow: var(--shadow), 0 0 0 4px var(--ring);
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      /* optional: subtle “danger” icon */
+      .btn-danger::before {
+        font-size: 16px;
+      }
+      .filter-box {
+        margin: 15px auto;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: none;
+        background: #444;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .filter-btn:hover {
+        background: #666;
+      }
+
+      .filter-btn.active {
+        background: #ff6a00;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Danh sách biển số</h1>
+    <div class="container">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Nhập biển số..." />
+        <button onclick="loadPlates()">Tìm kiếm</button>
+      </div>
+      <div class="filter-box">
+        <button class="filter-btn" onclick="setFilter('')">Tất cả</button>
+        <button class="filter-btn" onclick="setFilter('car')">Ô tô</button>
+        <button class="filter-btn" onclick="setFilter('truck')">Xe tải</button>
+        <button class="filter-btn" onclick="setFilter('motorcycle')">
+          Xe máy
+        </button>
+        <button class="filter-btn" onclick="setFilter('bus')">Xe bus</button>
+        <button class="filter-btn" onclick="setFilter('person')">Người</button>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-danger" id="clearBtn" onclick="clearDB()">
+        Xóa sạch dữ liệu
+      </button>
+
+      <script>
+        async function clearDB() {
+          if (!confirm("Bạn có chắc muốn xóa hết không?")) return;
+          const res = await fetch("/clear-db", { method: "DELETE" });
+          const data = await res.json();
+          alert(data.message || "Xong!");
+          loadPlates();
+        }
+      </script>
+    </div>
+    <div class="image-grid" id="imageGrid"></div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">✖</span>
+        <h2 id="popupPlate"></h2>
+        <p id="popupTime"></p>
+        <img id="popupImage" src="" alt="Ảnh biển số" />
+      </div>
+    </div>
+
+    <script>
+      let selectedFilter = ""; // loại phương tiện đang chọn
+
+      function setFilter(type) {
+        selectedFilter = type;
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        loadPlates();
+      }
+
+      async function loadPlates() {
+        const search = document.getElementById("search").value;
+        let url = `/api/plates?search=${encodeURIComponent(search)}`;
+        if (selectedFilter) {
+          url += `&vehicle_type=${encodeURIComponent(selectedFilter)}`;
+        }
+
+        const res = await fetch(url);
+        const plates = await res.json();
+        const grid = document.getElementById("imageGrid");
+        grid.innerHTML = plates
+          .map(
+            (p) => `
+        <div class="image-card" onclick="showPopup('${p.id}')">
+          <img src="data:image/jpeg;base64,${p.image_base64}" />
+          <p>Biển số: <b>${p.plate}</b></p>
+          <p>Loại xe: ${
+            p.vehicle_type === "car"
+              ? "<b>Ô tô</b>"
+              : p.vehicle_type === "truck"
+              ? "<b>Xe tải</b>"
+              : p.vehicle_type === "motorcycle"
+              ? "<b>Xe máy</b>"
+              : p.vehicle_type === "person"
+              ? "<b>Người</b>"
+              : p.vehicle_type === "bus"
+              ? "<b>Xe bus</b>"
+              : "<b>Không xác định</b>"
+          }</p>
+          <p>Mức độ tin cậy biển số: ${
+            p.ocr_confidence
+              ? `<b>${p.ocr_confidence.toFixed(2)}</b>`
+              : "<b>Không có</b>"
+          }</p>
+          <p>Mức độ tin cậy loại xe: ${
+            p.vehicle_confidence
+              ? `<b>${p.vehicle_confidence.toFixed(2)}</b>`
+              : "<b>Không có</b>"
+          }</p>
+          <p>Thời gian: ${p.timestamp}</p>
+        </div>
+      `
+          )
+          .join("");
+      }
+
+      async function showPopup(id) {
+        const res = await fetch(`/api/plate/${id}`);
+        const data = await res.json();
+        if (data.error) return alert("Không tìm thấy ảnh");
+
+        document.getElementById(
+          "popupPlate"
+        ).innerText = `Biển số: ${data.plate}`;
+        document.getElementById(
+          "popupTime"
+        ).innerText = `Thời gian: ${data.timestamp}`;
+        document.getElementById(
+          "popupImage"
+        ).src = `data:image/jpeg;base64,${data.image_base64}`;
+        document.getElementById("popup").style.display = "flex";
+      }
+
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+      }
+
+      const searchInput = document.getElementById("search");
+      searchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          loadPlates();
+        }
+      });
+
+      loadPlates();
+    </script>
+  </body>
+</html>
