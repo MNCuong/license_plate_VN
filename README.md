@@ -1,114 +1,153 @@
- Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System
+###Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System
+Overview
+The Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) System is a robust Python-based solution designed to detect vehicles, extract license plates, and perform Optical Character Recognition (OCR) to read Vietnamese license plate numbers from video streams or images. Built with scalability and real-world applications in mind, this system is ideal for:
 
- **Overview**
+Parking Management: Automate vehicle entry/exit tracking.
+Traffic Monitoring: Monitor and analyze traffic flow in real time.
+Security Systems: Enhance surveillance with automated license plate recognition.
 
-This project is a **Vietnamese Vehicle License Plate Recognition (ALPR/ANPR) system** built in Python.
-It detects vehicles from video streams, extracts license plates, and performs OCR (Optical Character Recognition) to read license plate numbers.
+This project leverages state-of-the-art computer vision techniques, including YOLO models for detection and OCR, and integrates with MongoDB for efficient data storage.
 
-Applications include:
+Features
 
-- Parking management
-- Traffic monitoring
-- Security systems
+Vehicle Detection: Accurately identifies vehicles (cars, motorcycles, trucks, buses) in images and video streams.
+License Plate Extraction: Detects and isolates license plates from identified vehicles.
+OCR Processing: Reads Vietnamese license plate numbers with high accuracy.
+Real-Time Video Processing: Processes video streams frame by frame for seamless operation.
+Configurable Settings: Easily modify model paths, detection thresholds, and video sources.
+Comprehensive Logging: Logs all operations, errors, and results for debugging and monitoring.
+MongoDB Integration: Stores recognized license plates and timestamps in a MongoDB database.
+Scalable Architecture: Designed for easy integration into larger systems.
 
+Installation
+Follow these steps to set up the project locally:
 
- **Features**
+1. Clone the Repository
+   git clone https://github.com/MNCuong/license_plate.git
+   cd vehicle_lpr
 
-- **Vehicle Detection:** Detects vehicles in images and video streams.
-- **License Plate Recognition:** Extracts license plates from detected vehicles.
-- **OCR:** Reads Vietnamese license plates accurately.
-- **Video Processing:** Processes video streams frame by frame.
-- **Configurable:** Easily change model paths, thresholds, and video sources.
-- **Logging:** All operations are logged for debugging and analysis.
-- **MongoDB Storage:** Recognized plates and timestamps are automatically stored in MongoDB.
+2. Set Up a Virtual Environment
+   Create and activate a Python virtual environment to manage dependencies:
 
+# Create virtual environment
 
- **Installation**
-
-1. **Clone the repository**
-
-bash
-git clone https://github.com/MNCuong/license_plate.git
-cd vehicle_lpr
-
-
-2. **Create a virtual environment**
-
-bash
 python -m venv venv
- Activate environment:
-source venv/bin/activate    Linux/macOS
-venv\Scripts\activate       Windows
 
+# Activate virtual environment
 
-3. **Install required packages**
+# On Linux/macOS
 
-bash
-pip install -r requirements.txt
+source venv/bin/activate
 
+# On Windows
 
- **Usage**
+venv\Scripts\activate
 
-Run the main script to start the system:
+3. Install Dependencies
+   Install the required Python packages listed in requirements.txt:
+   pip install -r requirements.txt
 
-bash
+Note: Ensure you have Python 3.8+ installed. For GPU support, install the appropriate versions of PyTorch and CUDA.
+
+Usage
+To start the ALPR system, run the main script:
 python main.py
 
+Configuration Steps
 
-- Ensure `config.py` has the correct video source, model paths, and MongoDB configuration.
-- Logs are saved in the `logs/` directory for monitoring.
-- Recognized plates are stored automatically in MongoDB.
+Update the config.py file with the correct paths for:
+Video source (e.g., camera feed or video file).
+YOLO model paths for vehicle detection, license plate recognition, and OCR.
+MongoDB connection settings.
 
+Monitor logs in the logs/ directory for system activity and debugging.
+Recognized license plates and timestamps are automatically stored in the configured MongoDB database.
 
- **Configuration**
-
-`config.py` contains all key settings:
-
-python
+Configuration
+The config.py file centralizes all system settings for easy customization. Below is an example configuration:
 from ultralytics import YOLO
 
-//Model paths
-MODEL_VEHICLE_PATH = "../models/best.pt"        YOLO model for vehicle detection
-MODEL_LPR_PATH = "../models/yolov8sLPR.pt"     YOLO model for license plate recognition
-MODEL_OCR_PATH = "../models/ocr.pt"            OCR model for reading plate numbers
+# Model paths for YOLO and OCR
 
-//Vehicle classes
+MODEL_VEHICLE_PATH = "../models/best.pt" # YOLO model for vehicle detection
+MODEL_LPR_PATH = "../models/yolov8sLPR.pt" # YOLO model for license plate recognition
+MODEL_OCR_PATH = "../models/ocr.pt" # OCR model for reading plate numbers
+
+# Supported vehicle classes
+
 VEHICLE_CLASSES = ["car", "motorcycle", "truck", "person", "bus"]
 
-//MongoDB settings
+# MongoDB connection settings
+
 MONGO_URI = 'mongodb://localhost:27017/'
 DB_NAME = 'vehicle_db'
 COLLECTION_NAME = 'vehicle_plates'
 
-//Global variables
-vehicle_plates = {}        Temporary storage of recognized plates
-logged_track_ids = set()   Track IDs already logged
-track_classes = {}         Class of each track ID
+# Global variables for tracking
 
+vehicle_plates = {} # Temporary storage of recognized plates
+logged_track_ids = set() # Track IDs already logged
+track_classes = {} # Class of each track ID
 
- **Database**
+Key Configuration Notes
 
-`database.py` handles storage of recognized plates and timestamps in **MongoDB** by default.
-You can adjust `config.py` to point to your MongoDB instance.
+Model Paths: Ensure the paths to the YOLO and OCR models are correct and accessible.
+MongoDB URI: Update the MONGO_URI to match your MongoDB instance.
+Vehicle Classes: Modify VEHICLE_CLASSES to include or exclude specific vehicle types as needed.
 
-Example default configuration:
-
-python
+Database Integration
+The system uses MongoDB to store recognized license plates and their associated timestamps. The database.py module handles all database interactions.
+Default MongoDB Configuration
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 MONGO_DB = 'vehicle_db'
 MONGO_COLLECTION = 'vehicle_plates'
 
+Customization
 
- **Logging**
+Update the MongoDB settings in config.py to point to your database instance.
+Ensure MongoDB is running locally or on a remote server before starting the application.
 
-All system operations, errors, and results are logged under `logs/` for easy monitoring and debugging.
+Logging
+All system activities, including detections, errors, and results, are logged in the logs/ directory. This ensures easy monitoring and debugging of the system.
 
- **Contribution**
+Log Location: logs/
+Log Format: Includes timestamps, operation details, and error messages for traceability.
 
-- Fork the project and submit pull requests.
-- For major changes, please open an issue first to discuss.
+Project Structure
+VEHICLE_LPR/
+├── img/ # Directory for images (e.g., input or sample images)
+├── models/ # Directory for YOLO and OCR model files
+├── output/ # Directory for processed output files
+├── plate/ # Directory for license plate-related data or images
+├── src/ # Source code directory
+│ ├── **pycache**/ # Python bytecode cache
+│ ├── logs/ # Log files directory
+│ ├── **init**.py # Initialization file for the package
+│ ├── config.py # Configuration settings
+│ ├── database.py # MongoDB integration
+│ ├── main.py # Main script to run the ALPR system
+│ ├── ocr.py # OCR processing logic
+│ ├── utils.py # Utility functions
+│ ├── vehicle_detection.py # Vehicle detection logic
+│ └── video_processor.py # Video processing logic
+├── templates/ # Directory for HTML templates (e.g., web interface)
+│ └── index.html # Main HTML template
+├── video/ # Directory for video files
+├── app.py # Flask or web application entry point (if applicable)
+├── README.md # Project documentation
+└── requirements.txt # List of Python dependencies
 
- **License**
-This project is licensed under the VCONNEX License.
-© 2025 VCONNEX Việt Nam. All rights reserved.
+Contribution
+We welcome contributions to enhance the system! To contribute:
+
+Fork the Repository: Create your own copy of the project.
+Make Changes: Implement your improvements or bug fixes.
+Submit a Pull Request: Share your changes for review.
+Open an Issue: For major changes or feature requests, please open an issue to discuss first.
+
+License
+This project is licensed under the MNC License.© 2025 MNC Việt Nam. All rights reserved.
+
+Contact
+For questions, feedback, or support, please contact the project maintainers at cuong.mai@vconnex.vn.
