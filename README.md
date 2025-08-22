@@ -186,6 +186,3 @@ Licensed under the **MNC License**.
 
 For support or feedback: **[cuong.mai@vconnex.vn](mailto:cuong.mai@vconnex.vn)**
 
-```
-
-```
